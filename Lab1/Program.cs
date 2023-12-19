@@ -1,642 +1,472 @@
 public class Program
 {
-    public static void Main(string[] args)
+    class Project
     {
-        #region 1_3
-        Console.WriteLine("1_3:");
-        string str = "";
-        int n = 4;
-        int m = 4;
-        double[,] mtrx = new double[n, m];
-        double sum = 0;
-        Console.WriteLine("Введите матрицу - 4 строки по 4 эллемента:");
-        for (int i = 0; i < n; i++)
+        public static void output(double[,] arr, int a, int b)
         {
-            str = Console.ReadLine();
-            double[] arr = str.Split(' ').Select(double.Parse).ToArray();
-            for (int j = 0; j < m; j++)
+            Console.WriteLine("Итоговая матрица: ");
+            for (int i = 0; i < a; i++)
             {
-                mtrx[i, j] = arr[j];
-            }
-        }
-        for (int i = 0; i < n; i++)
-        {
-            sum += mtrx[i, i];
-        }
-        Console.WriteLine("Сумма диагональных элементов матрицы: " + sum);
-        #endregion
-        Console.WriteLine();
-
-        #region 1_7
-        Console.WriteLine("1_7:");
-        n = 3;
-        m = 5;
-        double max = int.MinValue;
-        int index = 0;
-        mtrx = new double[n, m];
-        Console.WriteLine("Введите матрицу - 3 строки по 5 эллементов:");
-        for (int i = 0; i < n; i++)
-        {
-            str = Console.ReadLine();
-            double[] arr = str.Split(' ').Select(double.Parse).ToArray();
-            for (int j = 0; j < m; j++)
-            {
-                mtrx[i, j] = arr[j];
-            }
-        }
-        double[] maxValues = new double[mtrx.GetLength(1)];
-        for (int j = 0; j < mtrx.GetLength(1); j++)
-        {
-            max = mtrx[0, j];
-
-            for (int i = 1; i < mtrx.GetLength(0); i++)
-            {
-                if (mtrx[i, j] > max)
+                for (int j = 0; j < b; j++)
                 {
-                    max = mtrx[i, j];
+                    Console.Write(arr[i, j] + " ");
                 }
-            }
-            maxValues[j] = max;
-        }
-
-        Console.WriteLine("Массив максимальных элементов столбцов матрицы:");
-
-        foreach (int value in maxValues)
-        {
-            Console.Write(value + " ");
-        }
-        #endregion
-        Console.WriteLine();
-
-        #region 1_11
-        Console.WriteLine("1_11:");
-        n = 5;
-        m = 7;
-        double min = Math.Pow(10, 20);
-        mtrx = new double[n, m];
-        double[,] array = new double[n - 1, m];
-        index = 0;
-        max = Math.Pow(-10, 20);
-        Console.WriteLine("Введите матрицу - 5 строк по 7 эллементов: ");
-        for (int i = 0; i < n; i++)
-        {
-            str = Console.ReadLine();
-            double[] arr = str.Split(' ').Select(double.Parse).ToArray();
-            for (int j = 0; j < m; j++)
-            {
-                mtrx[i, j] = arr[j];
-                if (arr[j] < min && j == 0)
-                {
-                    min = arr[j];
-                    index = i;
-                }
-            }
-        }
-        Console.WriteLine("Исходная матрица:");
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < m; j++)
-            {
-                Console.Write(mtrx[i, j] + " ");
+                Console.WriteLine();
             }
             Console.WriteLine();
         }
-        Console.WriteLine();
-        for (int i = 0; i < n; i++)
+        public static int[] MaxMtrx(double[,] mtrx, int a, int b)
         {
-            for (int j = 0; j < m; j++)
+            double max = int.MinValue;
+            int[] array = new int[2];
+            for (int i = 0; i < a; i++)
             {
-                if (i < index)
+                for (int j = 0; j < b; j++)
                 {
-                    array[i, j] = mtrx[i, j];
-                }
-                if (i > index)
-                {
-                    array[i - 1, j] = mtrx[i, j];
-                }
-            }
-        }
-        Console.WriteLine("Конечная матрица:");
-        for (int i = 0; i < n - 1; i++)
-        {
-            for (int j = 0; j < m; j++)
-            {
-                Console.Write(array[i, j] + " ");
-            }
-            Console.WriteLine();
-        }
-        #endregion
-        Console.WriteLine();
-
-        #region 1_15
-        Console.WriteLine("1_15:");
-        n = 5;
-        m = 7;
-        max = int.MinValue;
-        mtrx = new double[n, m];
-        index = 0;
-        Console.WriteLine("Введите матрицу - 5 строк по 7 эллементов: ");
-        for (int i = 0; i < n; i++)
-        {
-            str = Console.ReadLine();
-            double[] arr = str.Split(' ').Select(double.Parse).ToArray();
-            for (int j = 0; j < m; j++)
-            {
-                mtrx[i, j] = arr[j];
-            }
-        }
-        for (int i = 0; i < mtrx.GetLength(0); i++)
-        {
-            max = mtrx[i, 0];
-
-            for (int j = 1; j < mtrx.GetLength(1); j++)
-            {
-                if (mtrx[i, j] > max)
-                {
-                    max = mtrx[i, j];
-                    index = j;
+                    if (mtrx[i, j] > max)
+                    {
+                        max = mtrx[i, j];
+                        array[1] = j;
+                        array[0] = i;
+                    }
                 }
             }
-            mtrx[i, index] = max * (i + 1);
+            return array;
         }
-
-        Console.WriteLine("Конечная матрица:");
-
-        for (int i = 0; i < mtrx.GetLength(0); i++)
+        public static int MaxMtrxLine(double[,] mtrx, int a, int b)
         {
-            for (int j = 0; j < mtrx.GetLength(1); j++)
+            int I = 0;
+            double sum = 0;
+            double max = int.MinValue;
+            for (int i = 0; i < a; i++)
             {
-                Console.Write(mtrx[i, j] + " ");
-            }
-
-            Console.WriteLine();
-        }
-        #endregion
-        Console.WriteLine();
-
-        #region 1_19
-        Console.WriteLine("1_19:");
-        Console.WriteLine("Введите кол-во строк:");
-        n = int.Parse(Console.ReadLine());
-        Console.WriteLine("Введите кол-во столбцов:");
-        m = int.Parse(Console.ReadLine());
-        mtrx = new double[n, m];
-        max = int.MinValue;
-        Console.WriteLine("Введите матрицу - " + n + " строк по " + m + " эллементов,через пробел:");
-        for (int i = 0; i < n; i++)
-        {
-            str = Console.ReadLine();
-            double[] arr = str.Split(' ').Select(double.Parse).ToArray();
-            for (int j = 0; j < m; j++)
-            {
-                mtrx[i, j] = arr[j];
-            }
-        }
-        for (int i = 0; i < mtrx.GetLength(0); i++)
-        {
-            int maxIndex = 0;
-            max = mtrx[i, 0];
-            for (int j = 1; j < mtrx.GetLength(1); j++)
-            {
-                if (mtrx[i, j] > max)
+                sum = 0;
+                for (int j = 0; j < b; j++)
                 {
-                    max = mtrx[i, j];
-                    maxIndex = j;
+                    if (mtrx[i, j] > 0)
+                    {
+                        sum += 1;
+                    }
+                }
+                if (sum > max)
+                {
+                    max = sum;
+                    I = i;
                 }
             }
-            for (int j = 0; j < maxIndex; j++)
+            return I;
+        }
+        public static int MaxMtrxC(double[,] mtrx, int a, int b)
+        {
+            int J = 0;
+            double sum = 0;
+            double max = int.MinValue;
+            for (int i = 0; i < b; i++)
             {
-                if (mtrx[i, j] < 0)
+                sum = 0;
+                for (int j = 0; j < a; j++)
                 {
-                    mtrx[i, j] /= max;
+                    if (mtrx[j, i] > 0)
+                    {
+                        sum += 1;
+                    }
+                }
+                if (sum > max)
+                {
+                    max = sum;
+                    J = i;
                 }
             }
+            return J;
         }
-        Console.WriteLine("Преобразованная матрица:");
-        for (int i = 0; i < mtrx.GetLength(0); i++)
+        public static double[,] DelLine(double[,] mtrx, int a, int b, int I)
         {
-            for (int j = 0; j < mtrx.GetLength(1); j++)
+            double[,] mtrx1 = new double[a - 1, b];
+            for (int i = 0; i < I; i++)
             {
-                Console.Write(mtrx[i, j] + " ");
-            }
-
-            Console.WriteLine();
-        }
-        #endregion
-        Console.WriteLine();
-
-        #region 1_23
-        Console.WriteLine("1_23:");
-        n = 5;
-        m = 7;
-        mtrx = new double[n, m];
-        array = new double[n, m];
-        int[] D = new int[n];
-        max = int.MaxValue;
-        index = 0;
-        Console.WriteLine("Введите матрицу - 5 строк по 6 эллементов: ");
-        for (int i = 0; i < n; i++)
-        {
-            str = Console.ReadLine();
-            double[] mass = str.Split(' ').Select(double.Parse).ToArray();
-            for (int j = 0; j < m - 1; j++)
-            {
-                mtrx[i, j] = mass[j];
-                if (mtrx[i, j] > max)
+                for (int j = 0; j < b; j++)
                 {
-                    max = mass[j];
-                    index = j;
+                    mtrx1[i, j] = mtrx[i, j];
                 }
             }
-            D[i] = index;
-            index = 0;
-            max = int.MaxValue;
-        }
-        Console.WriteLine("Исходная матрица:");
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < m; j++)
+            for (int i = I; i < a - 1; i++)
             {
-                Console.Write(mtrx[i, j] + " ");
-            }
-            Console.WriteLine();
-        }
-        Console.WriteLine();
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < m; j++)
-            {
-                if (j <= D[i])
+                for (int j = 0; j < b; j++)
                 {
-                    array[i, j] = mtrx[i, j];
-                }
-                if ((j - 1) == D[i])
-                {
-                    array[i, j] = mtrx[i, j - 1];
-                }
-                if ((j - 1) > D[i])
-                {
-                    array[i, j] = mtrx[i, j - 1];
+                    mtrx1[i, j] = mtrx[i + 1, j];
                 }
             }
+            return mtrx1;
         }
-        Console.WriteLine("Конечная матрица");
-        for (int i = 0; i < n; i++)
+        public static int CompareMinMax(int Imax, int Imin)
         {
-            for (int j = 0; j < m; j++)
+            if (Imax == Imin)
             {
-                Console.Write(array[i, j] + " ");
+                return 0;
             }
-            Console.WriteLine();
-        }
-        #endregion
-        Console.WriteLine();
-
-        #region 1_27
-        Console.WriteLine("1_27:");
-        n = 5;
-        m = 7;
-        mtrx = new double[n, m];
-        max = int.MinValue;
-        Console.WriteLine("Введите матрицу - 5 строк по 7 эллементов: ");
-        for (int i = 0; i < n; i++)
-        {
-            str = Console.ReadLine();
-            double[] arr = str.Split(' ').Select(double.Parse).ToArray();
-            for (int j = 0; j < m; j++)
+            if (Imax > Imin)
             {
-                mtrx[i, j] = arr[j];
-            }
-        }
-        double[] maxElements = new double[mtrx.GetLength(0)];
-        for (int i = 0; i < mtrx.GetLength(0); i++)
-        {
-            max = mtrx[i, 0];
-
-            for (int j = 1; j < mtrx.GetLength(1); j++)
-            {
-                if (mtrx[i, j] > max)
-                {
-                    max = mtrx[i, j];
-                }
-            }
-
-            maxElements[mtrx.GetLength(0) - 1 - i] = max;
-        }
-
-        for (int i = 0; i < mtrx.GetLength(0); i++)
-        {
-            mtrx[i, 3] = maxElements[i];
-        }
-
-        Console.WriteLine("Кочнечная матрица:");
-
-        for (int i = 0; i < mtrx.GetLength(0); i++)
-        {
-            for (int j = 0; j < mtrx.GetLength(1); j++)
-            {
-                Console.Write(mtrx[i, j] + " ");
-            }
-
-            Console.WriteLine();
-        }
-        #endregion
-        Console.WriteLine();
-
-        #region 2_1
-        Console.WriteLine("2_1:");
-        n = 5;
-        m = 7;
-        mtrx = new double[n, m];
-        D = new int[n];
-        max = int.MinValue;
-        index = 0;
-        Console.WriteLine("Введите матрицу - 5 строк по 7 эллементов: ");
-        for (int i = 0; i < n; i++)
-        {
-            str = Console.ReadLine();
-            double[] arr = str.Split(' ').Select(double.Parse).ToArray();
-            for (int j = 0; j < m; j++)
-            {
-                mtrx[i, j] = arr[j];
-                if (mtrx[i, j] > max)
-                {
-                    max = arr[j];
-                    index = j;
-                }
-            }
-            D[i] = index;
-            index = 0;
-            max = int.MinValue;
-        }
-        Console.WriteLine("Исходная матрица:");
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < m; j++)
-            {
-                Console.Write(mtrx[i, j] + " ");
-            }
-            Console.WriteLine();
-        }
-        Console.WriteLine();
-        for (int i = 0; i < n; i++)
-        {
-            if (D[i] == 0)
-            {
-                mtrx[i, 1] = mtrx[i, 1] * 2;
-            }
-            else if (D[i] == (m - 1))
-            {
-                mtrx[i, (m - 2)] = mtrx[i, (m - 2)] * 2;
+                return 1;
             }
             else
             {
-                if (mtrx[i, D[i] - 1] < mtrx[i, D[i] + 1])
+                return 2;
+            }
+        }
+        public static int[] MinMtrx(double[,] mtrx, int a, int b)
+        {
+            double min = int.MaxValue;
+            int[] array = new int[2];
+            for (int i = 0; i < a; i++)
+            {
+                for (int j = 0; j < b; j++)
                 {
-                    mtrx[i, D[i] - 1] = mtrx[i, D[i] - 1] * 2;
-                }
-                else
-                {
-                    mtrx[i, D[i] + 1] = mtrx[i, D[i] + 1] * 2;
-                }
-            }
-        }
-        Console.WriteLine("Конечная матрица");
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < m; j++)
-            {
-                Console.Write(mtrx[i, j] + " ");
-            }
-            Console.WriteLine();
-        }
-        #endregion
-        Console.WriteLine();
-
-        #region 2_2
-        Console.WriteLine("2_5:");
-        n = 7;
-        m = 5;
-        mtrx = new double[n, m];
-        D = new int[n];
-        max = int.MinValue;
-        index = 0;
-        sum = 0;
-        Console.WriteLine("Введите матрицу - 7 строк по 5 эллементов: ");
-        for (int i = 0; i < n; i++)
-        {
-            str = Console.ReadLine();
-            double[] arr = str.Split(' ').Select(double.Parse).ToArray();
-            for (int j = 0; j < m; j++)
-            {
-                mtrx[i, j] = arr[j];
-            }
-        }
-        for (int i = 0; i < m; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                if (mtrx[j, i] > max)
-                {
-                    max = mtrx[i, j];
-                    index = j;
-                }
-            }
-            D[i] = index;
-            index = 0;
-            max = int.MinValue;
-        }
-        Console.WriteLine("Исходная матрица:");
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < m; j++)
-            {
-                Console.Write(mtrx[i, j] + " ");
-            }
-            Console.WriteLine();
-        }
-        Console.WriteLine();
-        for (int i = 0; i < m; i++)
-        {
-            sum = (mtrx[0, i] + mtrx[(n - 1), i]) / 2;
-            if (mtrx[D[i], i] < sum)
-            {
-                mtrx[D[i], i] = sum;
-            }
-            else
-            {
-                mtrx[D[i], i] = D[i];
-            }
-        }
-        Console.WriteLine("Конечная матрица");
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < m; j++)
-            {
-                Console.Write(mtrx[i, j] + " ");
-            }
-            Console.WriteLine();
-        }
-        #endregion
-        Console.WriteLine();
-
-        #region 2_3
-        Console.WriteLine("2_9:");
-        n = 6;
-        m = 7;
-        mtrx = new double[n, m];
-        double[,] C = new double[n, m];
-        D = new int[n];
-        Console.WriteLine("Введите матрицу - 6 строк по 7 эллементов: ");
-        for (int i = 0; i < n; i++)
-        {
-            str = Console.ReadLine();
-            double[] arr = str.Split(' ').Select(double.Parse).ToArray();
-            for (int j = 0; j < m; j++)
-            {
-                mtrx[i, j] = arr[j];
-            }
-        }
-        Console.WriteLine("Исходная матрица:");
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < m; j++)
-            {
-                Console.Write(mtrx[i, j] + " ");
-            }
-            Console.WriteLine();
-        }
-        Console.WriteLine();
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < m; j++)
-            {
-                C[i, j] = mtrx[i, (m - 1) - j];
-            }
-        }
-        Console.WriteLine("Конечная матрица");
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < m; j++)
-            {
-                Console.Write(C[i, j] + " ");
-            }
-            Console.WriteLine();
-        }
-        #endregion
-        Console.WriteLine();
-
-        #region 3_8
-        Console.WriteLine("3_8:");
-        array = new double[7, 5];
-        Console.WriteLine("Введите матрицу 7x5: ");
-        for (int i = 0; i < array.GetLength(0); i++)
-        {
-            str = Console.ReadLine();
-            string[] lines = str.Split(' ');
-            for (int j = 0; j < array.GetLength(1); j++)
-            {
-                array[i, j] = Convert.ToDouble(lines[j]);
-            }
-        }
-
-        for (int i = 0; i < array.GetLength(0) - 1; i++)
-        {
-            index = 0;
-            int countM = 0;
-            for (int j = i; j < array.GetLength(0); j++)
-            {
-                int t = 0;
-
-                for (int k = 0; k < array.GetLength(1); k++)
-                {
-                    if (array[j, k] > 0)
+                    if (mtrx[i, j] < min)
                     {
-                        t++;
+                        min = mtrx[i, j];
+                        array[1] = j;
+                        array[0] = i;
                     }
                 }
-
-                if (countM < t)
+            }
+            return array;
+        }
+        public static double[,] RemovAColumnWithout0(double[,] mtrx, int a, int b)
+        {
+            int c = 0;
+            int c1 = 0;
+            int k = 0;
+            for (int j = 0; j < b; j++)
+            {
+                c = 0;
+                for (int i = 0; i < a; i++)
                 {
-                    countM = t;
-                    index = j;
-                }
-            }
-            double[] line = new double[array.GetLength(1)];
-            for (int j = 0; j < array.GetLength(1); j++)
-            {
-                line[j] = array[i, j];
-                array[i, j] = array[index, j];
-                array[index, j] = line[j];
-            }
-        }
-
-        Console.WriteLine("Итоговая матрица:");
-        for (int i = 0; i < array.GetLength(0); i++)
-        {
-            for (int j = 0; j < array.GetLength(1); j++)
-            {
-                Console.Write(array[i, j] + " ");
-            }
-            Console.WriteLine();
-        }
-        #endregion
-        Console.WriteLine();
-
-        #region 3_9
-        Console.WriteLine("3_9:");
-        n = 5;
-        m = 7;
-        mtrx = new double[n, m];
-        Console.WriteLine("Введите матрицу - 5 строк по 7 эллементов: ");
-        for (int i = 0; i < n; i++)
-        {
-            str = Console.ReadLine();
-            double[] arr = str.Split(' ').Select(double.Parse).ToArray();
-            for (int j = 0; j < m; j++)
-            {
-                mtrx[i, j] = arr[j];
-            }
-        }
-        int[] negativeCounts = new int[mtrx.GetLength(1)];
-        for (int j = 0; j < mtrx.GetLength(1); j++)
-        {
-            for (int i = 0; i < mtrx.GetLength(0); i++)
-            {
-                if (mtrx[i, j] < 0)
-                {
-                    negativeCounts[j]++;
-                }
-            }
-        }
-        for (int i = 0; i < mtrx.GetLength(1) - 1; i++)
-        {
-            for (int j = 0; j < mtrx.GetLength(1) - 1 - i; j++)
-            {
-                if (negativeCounts[j] > negativeCounts[j + 1])
-                {
-                    for (int k = 0; k < mtrx.GetLength(0); k++)
+                    if ((mtrx[i, j] == 0))
                     {
-                        double temp = mtrx[k, j];
-                        mtrx[k, j] = mtrx[k, j + 1];
-                        mtrx[k, j + 1] = temp;
+                        c += 1;
                     }
-                    int tempCount = negativeCounts[j];
-                    negativeCounts[j] = negativeCounts[j + 1];
-                    negativeCounts[j + 1] = tempCount;
+                }
+                if (c == 0)
+                {
+                    c1++;
                 }
             }
-        }
-        Console.WriteLine("Конечная матрица:");
-        for (int i = 0; i < mtrx.GetLength(0); i++)
-        {
-            for (int j = 0; j < mtrx.GetLength(1); j++)
+            double[,] mtrx1 = new double[a, b - c1];
+            for (int j = 0; j < b - c1; j++)
             {
-                Console.Write(mtrx[i, j] + " ");
+                c = 0;
+                for (int i = 0; i < a; i++)
+                {
+                    if ((mtrx[i, j] == 0))
+                    {
+                        c += 1;
+                    }
+                }
+                if (c == 0)
+                {
+                    k++;
+                }
+                for (int i = 0; i < a; i++)
+                {
+                    mtrx1[i, j] = mtrx[i, j + k];
+                }
             }
-
-            Console.WriteLine();
+            output(mtrx1, a, b - c1);
+            return mtrx1;
         }
-        #endregion
+        public static int MinMtrxLine(double[,] mtrx, int a, int b)
+        {
+            int I = 0;
+            double s = 0;
+            double max = int.MinValue;
+            for (int i = 0; i < a; i++)
+            {
+                s = 0;
+                for (int j = 0; j < b; j++)
+                {
+                    if (mtrx[i, j] < 0)
+                    {
+                        s += 1;
+                    }
+                }
+                if (s > max)
+                {
+                    max = s;
+                    I = i;
+                }
+            }
+            return I;
+        }
+        public static int SwapLines(double[,] mtrx, double[,] mtrx1, int a, int b, int I, int I1)
+        {
+            double[] array = new double[b];
+            for (int j = 0; j < b; j++)
+            {
+                array[j] = mtrx[I, j];
+            }
+            for (int j = 0; j < b; j++)
+            {
+                mtrx[I, j] = mtrx1[I1, j];
+            }
+            for (int j = 0; j < b; j++)
+            {
+                mtrx1[I1, j] = array[j];
+            }
+            output(mtrx, a, b);
+            output(mtrx1, a, b);
+            return I;
+        }
+        public static void Main(string[] args)
+        {
+            #region 1
+            Console.WriteLine("Задание 1: ");
+            int n = 5;
+            int m = 6;
+            double[,] mtrx = new double[n, m];
+            Console.WriteLine($"Введите матрицу - Количество строк: {n}; Количество элементов в строке: {m}");
+            for (int i = 0; i < n; i++)
+            {
+                string str = Console.ReadLine();
+                double[] arr = str.Split(' ').Select(double.Parse).ToArray();
+                for (int j = 0; j < m; j++)
+                {
+                    mtrx[i, j] = arr[j];
+                }
+            }
+            int a = 3;
+            int b = 5;
+            double[,] mtrx1 = new double[a, b];
+            Console.WriteLine($"Введите матрицу - Количество строк: {a}; Количество элементов в строке: {b}");
+            for (int i = 0; i < a; i++)
+            {
+                string str = Console.ReadLine();
+                double[] arr = str.Split(' ').Select(double.Parse).ToArray();
+                for (int j = 0; j < b; j++)
+                {
+                    mtrx1[i, j] = arr[j];
+                }
+            }
+            int[] arr1 = MaxMtrx(mtrx, n, m);
+            int[] arr2 = MaxMtrx(mtrx1, a, b);
+            double q = mtrx[arr1[0], arr1[1]];
+            mtrx[arr1[0], arr1[1]] = mtrx1[arr2[0], arr2[1]];
+            mtrx1[arr2[0], arr2[1]] = q;
+            Console.WriteLine("Итоговые матрицы");
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    Console.Write(mtrx[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+            for (int i = 0; i < a; i++)
+            {
+                for (int j = 0; j < b; j++)
+                {
+                    Console.Write(mtrx1[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+            #endregion
+            Console.WriteLine();
+
+            #region 7
+            Console.WriteLine("Задание 7: ");
+            n = 4;
+            m = 5;
+            mtrx = new double[n, m];
+            Console.WriteLine($"Введите матрицу - Количество строк: {n}; Количество элементов в строке: {m}");
+            for (int i = 0; i < n; i++)
+            {
+                string str = Console.ReadLine();
+                double[] arr = str.Split(' ').Select(double.Parse).ToArray();
+                for (int j = 0; j < m; j++)
+                {
+                    mtrx[i, j] = arr[j];
+                }
+            }
+            a = 5;
+            b = 6;
+            mtrx1 = new double[a, b];
+            Console.WriteLine($"Введите матрицу - Количество строк: {a}; Количество элементов в строке: {b}");
+            for (int i = 0; i < a; i++)
+            {
+                string str = Console.ReadLine();
+                double[] arr = str.Split(' ').Select(double.Parse).ToArray();
+                for (int j = 0; j < b; j++)
+                {
+                    mtrx1[i, j] = arr[j];
+                }
+            }
+            int I = MaxMtrxLine(mtrx, n, m);
+            int J = MaxMtrxC(mtrx1, a, b);
+            double[,] mtrx2 = new double[n + 1, m];
+            double[] arr3 = new double[a];
+            for (int i = 0; i < n + 1; i++)
+            {
+                arr3[i] = mtrx1[i, J];
+            }
+            for (int i = 0; i < n + 1; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    if (i <= I)
+                    {
+                        mtrx2[i, j] = mtrx[i, j];
+                    }
+                    if (i == (I + 1))
+                    {
+                        mtrx2[i, j] = arr3[j];
+                    }
+                    if (i > (I + 1))
+                    {
+                        mtrx2[i, j] = mtrx[i - 1, j];
+                    }
+
+                }
+            }
+            Console.WriteLine(I);
+            Console.WriteLine("Итоговая матрица");
+            for (int i = 0; i < n + 1; i++)
+            {
+                for (int j = 0; j < m; j++)
+                {
+                    Console.Write(mtrx2[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+            #endregion
+            Console.WriteLine();
+
+            #region 13
+            Console.WriteLine("Задание 13: ");
+            Console.WriteLine("Введите количество строк в матрице: ");
+            int.TryParse(Console.ReadLine(), out n);
+            Console.WriteLine("Введите количество элементов в строке матрицы: ");
+            int.TryParse(Console.ReadLine(), out m);
+            mtrx = new double[n, m];
+            if (n - 1 >= 0)
+            {
+                mtrx1 = new double[n - 1, m];
+            }
+            if (n - 2 >= 0)
+            {
+                mtrx2 = new double[n - 2, m];
+            }
+            Console.WriteLine($"Введите матрицу - Количество строк: {n}; Количество элементов в строке: {m}");
+            for (int i = 0; i < n; i++)
+            {
+                string str = Console.ReadLine();
+                double[] arr = str.Split(' ').Select(double.Parse).ToArray();
+                for (int j = 0; j < m; j++)
+                {
+                    mtrx[i, j] = arr[j];
+                }
+            }
+            arr1 = MaxMtrx(mtrx, n, m);
+            arr2 = MinMtrx(mtrx, n, m);
+            I = arr1[0];
+            int I1 = arr2[0];
+            if (n > 0)
+            {
+                if (I == I1)
+                {
+                    mtrx1 = DelLine(mtrx, n, m, I);
+                    output(mtrx1, n - 1, m);
+                }
+                if (I < I1)
+                {
+                    I1 -= 1;
+                    mtrx1 = DelLine(mtrx, n, m, I);
+                    mtrx2 = DelLine(mtrx1, n - 1, m, I1);
+                    output(mtrx2, n - 2, m);
+                }
+                if (I > I1)
+                {
+                    mtrx1 = DelLine(mtrx, n, m, I);
+                    mtrx2 = DelLine(mtrx1, n - 1, m, I1);
+                    output(mtrx2, n - 2, m);
+                }
+            }
+            #endregion
+            Console.WriteLine();
+
+            #region 20
+            Console.WriteLine("Задание 20: ");
+            Console.WriteLine("Введите количество строк в матрице: ");
+            int.TryParse(Console.ReadLine(), out n);
+            Console.WriteLine("Введите количество элементов в строке матрицы: ");
+            int.TryParse(Console.ReadLine(), out m);
+            mtrx = new double[n, m];
+            Console.WriteLine($"Введите матрицу - Количество строк: {n}; Количество элементов в строке: {m}");
+            for (int i = 0; i < n; i++)
+            {
+                string str = Console.ReadLine();
+                double[] arr = str.Split(' ').Select(double.Parse).ToArray();
+                for (int j = 0; j < m; j++)
+                {
+                    mtrx[i, j] = arr[j];
+                }
+            }
+            Console.WriteLine("Введите количество строк в матрице: ");
+            int.TryParse(Console.ReadLine(), out a);
+            Console.WriteLine("Введите количество элементов в строке матрицы: ");
+            int.TryParse(Console.ReadLine(), out b);
+            mtrx1 = new double[a, b];
+            Console.WriteLine($"Введите матрицу - Количество строк: {a}; Количество элементов в строке: {b}");
+            for (int i = 0; i < a; i++)
+            {
+                string str = Console.ReadLine();
+                double[] arr = str.Split(' ').Select(double.Parse).ToArray();
+                for (int j = 0; j < b; j++)
+                {
+                    mtrx1[i, j] = arr[j];
+                }
+            }
+            RemovAColumnWithout0(mtrx, n, m);
+            RemovAColumnWithout0(mtrx1, a, b);
+            #endregion
+            Console.WriteLine();
+
+            #region 26
+            Console.WriteLine("Задание 26: ");
+            Console.WriteLine("Введите количество строк в матрице: ");
+            int.TryParse(Console.ReadLine(), out n);
+            Console.WriteLine("Введите количество элементов в строке матрицы: ");
+            int.TryParse(Console.ReadLine(), out m);
+            mtrx = new double[n, m];
+            Console.WriteLine($"Введите матрицу - Количество строк: {n}; Количество элементов в строке: {m}");
+            for (int i = 0; i < n; i++)
+            {
+                string str = Console.ReadLine();
+                double[] arr = str.Split(' ').Select(double.Parse).ToArray();
+                for (int j = 0; j < m; j++)
+                {
+                    mtrx[i, j] = arr[j];
+                }
+            }
+            mtrx1 = new double[n, m];
+            Console.WriteLine($"Введите матрицу - Количество строк: {n}; Количество элементов в строке: {m}");
+            for (int i = 0; i < n; i++)
+            {
+                string str = Console.ReadLine();
+                double[] arr = str.Split(' ').Select(double.Parse).ToArray();
+                for (int j = 0; j < m; j++)
+                {
+                    mtrx1[i, j] = arr[j];
+
+                }
+            }
+            Console.WriteLine();
+            I = MinMtrxLine(mtrx, n, m);
+            I1 = MinMtrxLine(mtrx1, n, m);
+            Console.WriteLine(I + " " + I1);
+            SwapLines(mtrx, mtrx1, n, m, I, I1);
+            #endregion
+        }
     }
 }
